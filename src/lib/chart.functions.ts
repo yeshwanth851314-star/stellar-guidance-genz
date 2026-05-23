@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import * as Astronomy from "astronomy-engine";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { computePanchanga } from "./panchanga.functions";
 
 function lahiriAyanamsha(date: Date): number {
