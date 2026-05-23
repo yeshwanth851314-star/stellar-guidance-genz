@@ -104,6 +104,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthSync />
+      <ScrollProgress />
+      <OmAmbient />
       <div className="relative mx-auto min-h-screen w-full max-w-[440px] overflow-hidden">
         <StarField />
         <Outlet />
