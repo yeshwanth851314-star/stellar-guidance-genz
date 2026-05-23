@@ -1,4 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+
+// ... keep existing code (imports continue)
+
+export const findHinduBirthday = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
 import { z } from "zod";
 import { computePanchanga } from "./panchanga.functions";
 
