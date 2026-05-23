@@ -11,6 +11,8 @@ import {
 
 import appCss from "../styles.css?url";
 import { StarField } from "@/components/cosmos/StarField";
+import { OmAmbient } from "@/components/OmAmbient";
+import { ScrollProgress } from "@/components/ScrollProgress";
 import { supabase } from "@/integrations/supabase/client";
 import { Toaster } from "sonner";
 
@@ -102,6 +104,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthSync />
+      <ScrollProgress />
+      <OmAmbient />
       <div className="relative mx-auto min-h-screen w-full max-w-[440px] overflow-hidden">
         <StarField />
         <Outlet />
