@@ -100,7 +100,7 @@ function Home() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="glass relative overflow-hidden rounded-3xl p-6"
+        className="glass-strong glass-edge glass-shine relative overflow-hidden rounded-3xl p-6"
         style={{
           background: `linear-gradient(135deg, ${daily.vibe_color}33, oklch(0.18 0.06 275 / 0.6))`,
         }}
