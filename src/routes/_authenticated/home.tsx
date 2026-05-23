@@ -140,10 +140,10 @@ function Home() {
 
       {/* Insight cards */}
       <div className="grid grid-cols-2 gap-3">
-        <InsightCard label="Planetary" value={daily.planetary_insight} />
-        <InsightCard label="Spiritual" value={daily.spiritual_guidance} />
-        <InsightCard label="Practical" value={daily.practical_tip} />
-        <InsightCard label="Ayurvedic" value={daily.ayurvedic_tip} />
+        <InsightCard label="Planetary" value={daily.planetary_insight ?? ""} />
+        <InsightCard label="Spiritual" value={daily.spiritual_guidance ?? ""} />
+        <InsightCard label="Practical" value={daily.practical_tip ?? ""} />
+        <InsightCard label="Ayurvedic" value={daily.ayurvedic_tip ?? ""} />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -151,7 +151,7 @@ function Home() {
           <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Color</p>
           <div
             className="mx-auto mt-2 h-8 w-8 rounded-full"
-            style={{ background: daily.lucky_color, boxShadow: `0 0 20px ${daily.lucky_color}` }}
+            style={{ background: daily.lucky_color ?? "#fff", boxShadow: `0 0 20px ${daily.lucky_color ?? "#fff"}` }}
           />
         </div>
         <div className="glass rounded-2xl p-4 text-center">
