@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
 import { getDailyContent } from "@/lib/daily-content.functions";
 
+const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
+
 const panchangaQO = queryOptions({
   queryKey: ["panchanga", new Date().toISOString().slice(0, 10)],
   queryFn: () => getPanchanga({ data: {} }),
