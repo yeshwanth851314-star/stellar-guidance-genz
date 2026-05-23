@@ -52,10 +52,30 @@ function AuthLayout() {
   useDailyReminder(reminder.time, reminder.enabled);
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="relative min-h-screen overflow-x-hidden pb-24">
+      {/* Cinematic cosmic backdrop — shared across all tabs */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 h-full w-full object-cover opacity-70"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260517_222138_3e3205be-3364-417b-a64a-bfe087acbec4.mp4"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-cosmos-deep/80 via-cosmos-deep/75 to-cosmos-deep/95" />
+        <div
+          className="absolute inset-0 opacity-60 mix-blend-soft-light"
+          style={{
+            background:
+              "radial-gradient(120% 80% at 70% 10%, oklch(0.82 0.16 85 / 0.30), transparent 55%), radial-gradient(80% 60% at 10% 90%, oklch(0.78 0.12 350 / 0.22), transparent 60%)",
+          }}
+        />
+      </div>
       <Outlet />
       <BottomNav />
     </div>
   );
 }
+
 
