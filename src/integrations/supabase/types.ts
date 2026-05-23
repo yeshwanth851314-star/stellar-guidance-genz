@@ -14,7 +14,360 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_content: {
+        Row: {
+          ayurvedic_tip: string | null
+          cosmic_energy: number | null
+          created_at: string
+          date: string
+          deity: string | null
+          id: string
+          lucky_color: string | null
+          lucky_number: number | null
+          mantra: string | null
+          planetary_insight: string | null
+          power_hour_end: string | null
+          power_hour_start: string | null
+          practical_tip: string | null
+          spiritual_guidance: string | null
+          user_id: string
+          vibe_color: string | null
+          vibe_description: string | null
+          vibe_icon: string | null
+          vibe_theme: string | null
+        }
+        Insert: {
+          ayurvedic_tip?: string | null
+          cosmic_energy?: number | null
+          created_at?: string
+          date: string
+          deity?: string | null
+          id?: string
+          lucky_color?: string | null
+          lucky_number?: number | null
+          mantra?: string | null
+          planetary_insight?: string | null
+          power_hour_end?: string | null
+          power_hour_start?: string | null
+          practical_tip?: string | null
+          spiritual_guidance?: string | null
+          user_id: string
+          vibe_color?: string | null
+          vibe_description?: string | null
+          vibe_icon?: string | null
+          vibe_theme?: string | null
+        }
+        Update: {
+          ayurvedic_tip?: string | null
+          cosmic_energy?: number | null
+          created_at?: string
+          date?: string
+          deity?: string | null
+          id?: string
+          lucky_color?: string | null
+          lucky_number?: number | null
+          mantra?: string | null
+          planetary_insight?: string | null
+          power_hour_end?: string | null
+          power_hour_start?: string | null
+          practical_tip?: string | null
+          spiritual_guidance?: string | null
+          user_id?: string
+          vibe_color?: string | null
+          vibe_description?: string | null
+          vibe_icon?: string | null
+          vibe_theme?: string | null
+        }
+        Relationships: []
+      }
+      herbs: {
+        Row: {
+          benefit: string | null
+          dosha: string[] | null
+          emoji: string | null
+          id: number
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+          traditional_use: string | null
+        }
+        Insert: {
+          benefit?: string | null
+          dosha?: string[] | null
+          emoji?: string | null
+          id?: number
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+          traditional_use?: string | null
+        }
+        Update: {
+          benefit?: string | null
+          dosha?: string[] | null
+          emoji?: string | null
+          id?: number
+          name_english?: string
+          name_sanskrit?: string
+          name_telugu?: string
+          traditional_use?: string | null
+        }
+        Relationships: []
+      }
+      nakshatra_library: {
+        Row: {
+          body_part: string | null
+          constellation_stars: Json | null
+          deity: string | null
+          element: string
+          gana: string
+          id: number
+          idx: number
+          lord: string
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+          quality: string | null
+          star_count: number | null
+          symbol: string
+          trait: string
+        }
+        Insert: {
+          body_part?: string | null
+          constellation_stars?: Json | null
+          deity?: string | null
+          element: string
+          gana: string
+          id?: number
+          idx: number
+          lord: string
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+          quality?: string | null
+          star_count?: number | null
+          symbol: string
+          trait: string
+        }
+        Update: {
+          body_part?: string | null
+          constellation_stars?: Json | null
+          deity?: string | null
+          element?: string
+          gana?: string
+          id?: number
+          idx?: number
+          lord?: string
+          name_english?: string
+          name_sanskrit?: string
+          name_telugu?: string
+          quality?: string | null
+          star_count?: number | null
+          symbol?: string
+          trait?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          birth_date: string | null
+          birth_lat: number | null
+          birth_lng: number | null
+          birth_place: string | null
+          birth_time: string | null
+          created_at: string
+          dosha: string | null
+          email: string | null
+          fcm_token: string | null
+          id: string
+          karana_index: number | null
+          lagna: number | null
+          moon_longitude: number | null
+          nakshatra: number | null
+          name: string | null
+          notif_lunar: boolean | null
+          notif_muhurta: boolean | null
+          notif_planetary: boolean | null
+          notif_spiritual: boolean | null
+          notif_weekly: boolean | null
+          notif_wellness: boolean | null
+          notification_time: string | null
+          onboarded: boolean | null
+          pada: number | null
+          phone: string | null
+          rasi: number | null
+          sound_enabled: boolean | null
+          sound_theme: string | null
+          sound_volume: number | null
+          sun_longitude: number | null
+          theme: string | null
+          tithi: number | null
+          updated_at: string
+          user_id: string
+          vara: number | null
+          yoga_index: number | null
+        }
+        Insert: {
+          birth_date?: string | null
+          birth_lat?: number | null
+          birth_lng?: number | null
+          birth_place?: string | null
+          birth_time?: string | null
+          created_at?: string
+          dosha?: string | null
+          email?: string | null
+          fcm_token?: string | null
+          id?: string
+          karana_index?: number | null
+          lagna?: number | null
+          moon_longitude?: number | null
+          nakshatra?: number | null
+          name?: string | null
+          notif_lunar?: boolean | null
+          notif_muhurta?: boolean | null
+          notif_planetary?: boolean | null
+          notif_spiritual?: boolean | null
+          notif_weekly?: boolean | null
+          notif_wellness?: boolean | null
+          notification_time?: string | null
+          onboarded?: boolean | null
+          pada?: number | null
+          phone?: string | null
+          rasi?: number | null
+          sound_enabled?: boolean | null
+          sound_theme?: string | null
+          sound_volume?: number | null
+          sun_longitude?: number | null
+          theme?: string | null
+          tithi?: number | null
+          updated_at?: string
+          user_id: string
+          vara?: number | null
+          yoga_index?: number | null
+        }
+        Update: {
+          birth_date?: string | null
+          birth_lat?: number | null
+          birth_lng?: number | null
+          birth_place?: string | null
+          birth_time?: string | null
+          created_at?: string
+          dosha?: string | null
+          email?: string | null
+          fcm_token?: string | null
+          id?: string
+          karana_index?: number | null
+          lagna?: number | null
+          moon_longitude?: number | null
+          nakshatra?: number | null
+          name?: string | null
+          notif_lunar?: boolean | null
+          notif_muhurta?: boolean | null
+          notif_planetary?: boolean | null
+          notif_spiritual?: boolean | null
+          notif_weekly?: boolean | null
+          notif_wellness?: boolean | null
+          notification_time?: string | null
+          onboarded?: boolean | null
+          pada?: number | null
+          phone?: string | null
+          rasi?: number | null
+          sound_enabled?: boolean | null
+          sound_theme?: string | null
+          sound_volume?: number | null
+          sun_longitude?: number | null
+          theme?: string | null
+          tithi?: number | null
+          updated_at?: string
+          user_id?: string
+          vara?: number | null
+          yoga_index?: number | null
+        }
+        Relationships: []
+      }
+      rasi_library: {
+        Row: {
+          body_part: string | null
+          color: string
+          element: string
+          id: number
+          idx: number
+          lord: string
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+          quality: string
+          symbol: string
+          trait_keywords: string[] | null
+        }
+        Insert: {
+          body_part?: string | null
+          color: string
+          element: string
+          id?: number
+          idx: number
+          lord: string
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+          quality: string
+          symbol: string
+          trait_keywords?: string[] | null
+        }
+        Update: {
+          body_part?: string | null
+          color?: string
+          element?: string
+          id?: number
+          idx?: number
+          lord?: string
+          name_english?: string
+          name_sanskrit?: string
+          name_telugu?: string
+          quality?: string
+          symbol?: string
+          trait_keywords?: string[] | null
+        }
+        Relationships: []
+      }
+      yoga_poses: {
+        Row: {
+          benefit: string | null
+          best_time: string | null
+          category: string | null
+          dosha: string[] | null
+          duration_minutes: number | null
+          emoji: string | null
+          id: number
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+        }
+        Insert: {
+          benefit?: string | null
+          best_time?: string | null
+          category?: string | null
+          dosha?: string[] | null
+          duration_minutes?: number | null
+          emoji?: string | null
+          id?: number
+          name_english: string
+          name_sanskrit: string
+          name_telugu: string
+        }
+        Update: {
+          benefit?: string | null
+          best_time?: string | null
+          category?: string | null
+          dosha?: string[] | null
+          duration_minutes?: number | null
+          emoji?: string | null
+          id?: number
+          name_english?: string
+          name_sanskrit?: string
+          name_telugu?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
