@@ -53,6 +53,7 @@ export const geocodePlace = createServerFn({ method: "POST" })
   });
 
 export const computeFullChart = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: {
     birthDate: string; // YYYY-MM-DD
     birthTime: string; // HH:MM (local)
