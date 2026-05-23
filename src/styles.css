@@ -117,9 +117,51 @@
   .font-telugu { font-family: var(--font-telugu); }
 
   .glass {
-    background: linear-gradient(135deg, oklch(1 0 0 / 0.06), oklch(1 0 0 / 0.02));
-    backdrop-filter: blur(14px);
-    border: 1px solid oklch(0.82 0.16 85 / 0.18);
+    position: relative;
+    background: linear-gradient(135deg, oklch(1 0 0 / 0.08), oklch(1 0 0 / 0.02));
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid oklch(0.82 0.16 85 / 0.22);
+    box-shadow:
+      0 8px 32px -8px oklch(0.08 0.03 280 / 0.55),
+      inset 0 1px 0 0 oklch(1 0 0 / 0.08),
+      inset 0 -1px 0 0 oklch(0 0 0 / 0.25);
+  }
+  .glass-strong {
+    position: relative;
+    background:
+      radial-gradient(120% 80% at 0% 0%, oklch(0.82 0.16 85 / 0.14), transparent 55%),
+      linear-gradient(135deg, oklch(1 0 0 / 0.10), oklch(1 0 0 / 0.03));
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid oklch(0.82 0.16 85 / 0.28);
+    box-shadow:
+      0 20px 60px -20px oklch(0.08 0.03 280 / 0.7),
+      inset 0 1px 0 0 oklch(1 0 0 / 0.12);
+  }
+  .glass-shine { position: relative; overflow: hidden; }
+  .glass-shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 35%, oklch(1 0 0 / 0.18) 50%, transparent 65%);
+    transform: translateX(-120%);
+    transition: transform 1.2s ease;
+  }
+  .glass-shine:hover::before { transform: translateX(120%); }
+  .glass-edge { position: relative; }
+  .glass-edge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, oklch(0.82 0.16 85 / 0.55), transparent 40%, oklch(0.78 0.12 350 / 0.45));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    pointer-events: none;
   }
   .text-gradient-gold {
     background: linear-gradient(135deg, var(--gold) 0%, var(--saffron) 50%, var(--lotus) 100%);

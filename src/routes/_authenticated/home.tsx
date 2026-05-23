@@ -100,7 +100,7 @@ function Home() {
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
-        className="glass relative overflow-hidden rounded-3xl p-6"
+        className="glass-strong glass-edge glass-shine relative overflow-hidden rounded-3xl p-6"
         style={{
           background: `linear-gradient(135deg, ${daily.vibe_color}33, oklch(0.18 0.06 275 / 0.6))`,
         }}
@@ -132,7 +132,7 @@ function Home() {
 
       {/* Mantra card */}
       <Reveal>
-        <section className="glass rounded-2xl p-5 text-center">
+        <section className="glass-strong glass-edge rounded-2xl p-5 text-center">
           <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Mantra</p>
           <p className="mt-2 font-display text-lg text-gradient-gold">{daily.mantra}</p>
           <p className="mt-2 text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -144,14 +144,14 @@ function Home() {
       {/* Morning / Evening guidance */}
       <Reveal delay={0.05}>
         <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <div className="glass rounded-2xl p-4">
+          <div className="glass glass-edge rounded-2xl p-4">
             <div className="flex items-center gap-2">
               <span className="text-lg">🌅</span>
               <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Morning Guidance</p>
             </div>
             <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.morning_guidance ?? ""}</p>
           </div>
-          <div className="glass rounded-2xl p-4">
+          <div className="glass glass-edge rounded-2xl p-4">
             <div className="flex items-center gap-2">
               <span className="text-lg">🌙</span>
               <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Evening Guidance</p>
@@ -173,14 +173,14 @@ function Home() {
 
       <Reveal delay={0.15}>
         <div className="grid grid-cols-2 gap-3">
-          <div className="glass rounded-2xl p-4 text-center">
+          <div className="glass glass-edge rounded-2xl p-4 text-center">
             <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Color</p>
             <div
               className="mx-auto mt-2 h-8 w-8 rounded-full"
               style={{ background: daily.lucky_color ?? "#fff", boxShadow: `0 0 20px ${daily.lucky_color ?? "#fff"}` }}
             />
           </div>
-          <div className="glass rounded-2xl p-4 text-center">
+          <div className="glass glass-edge rounded-2xl p-4 text-center">
             <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Number</p>
             <p className="mt-1 font-display text-3xl text-gradient-gold">{daily.lucky_number}</p>
           </div>
@@ -192,7 +192,7 @@ function Home() {
 
 function InsightCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="glass rounded-2xl p-4">
+    <div className="glass glass-edge rounded-2xl p-4">
       <p className="text-[9px] uppercase tracking-widest text-primary">{label}</p>
       <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground line-clamp-5">{value}</p>
     </div>
