@@ -23,9 +23,9 @@ type DailyContent = z.infer<typeof SCHEMA>;
 
 function fallback(p: ReturnType<typeof computePanchanga>): DailyContent {
   const vibe =
-    p.dosha === "vata"
+    p.dosha === "Vata"
       ? { vibe_theme: "Move with grace", vibe_color: "#a78bfa", vibe_icon: "🌬️" }
-      : p.dosha === "pitta"
+      : p.dosha === "Pitta"
       ? { vibe_theme: "Channel your fire", vibe_color: "#f59e0b", vibe_icon: "🔥" }
       : { vibe_theme: "Ground & nourish", vibe_color: "#34d399", vibe_icon: "🌿" };
   return {
@@ -36,11 +36,11 @@ function fallback(p: ReturnType<typeof computePanchanga>): DailyContent {
     spiritual_guidance: `Sit in silence for 7 minutes and offer gratitude to ${p.nakshatraName}'s deity.`,
     practical_tip: "Begin your most important task during the morning hours when energy is fresh.",
     ayurvedic_tip:
-      p.dosha === "vata"
+      p.dosha === "Vata"
         ? "Warm sesame oil massage and ginger tea will steady your day."
-        : p.dosha === "pitta"
+        : p.dosha === "Pitta"
         ? "Cool coconut water and mint balance excess heat."
-        : "Light, warm, spiced food keeps kapha agile.",
+        : "Light, warm, spiced food keeps Kapha agile.",
     lucky_color: vibe.vibe_color,
     lucky_number: ((p.tithi + p.nakshatra) % 9) + 1,
     cosmic_energy: 50 + ((p.yoga * 7) % 40),
