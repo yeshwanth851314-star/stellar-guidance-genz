@@ -43,7 +43,7 @@ export interface PanchangaResult {
   yoga: number;
   yogaName: string;
   karana: number;
-  dosha: "vata" | "pitta" | "kapha";
+  dosha: "Vata" | "Pitta" | "Kapha";
 }
 
 function tithiName(t: number): string {
@@ -54,14 +54,14 @@ function tithiName(t: number): string {
   return `${paksha} ${display}`;
 }
 
-function doshaOf(rasi: number): "vata" | "pitta" | "kapha" {
-  // simplified element mapping: fire→pitta, earth→kapha, air/water→vata
+function doshaOf(rasi: number): "Vata" | "Pitta" | "Kapha" {
   const fire = [0, 4, 8];
   const earth = [1, 5, 9];
-  if (fire.includes(rasi)) return "pitta";
-  if (earth.includes(rasi)) return "kapha";
-  return "vata";
+  if (fire.includes(rasi)) return "Pitta";
+  if (earth.includes(rasi)) return "Kapha";
+  return "Vata";
 }
+
 
 export function computePanchanga(date: Date): PanchangaResult {
   const ayan = lahiriAyanamsha(date);
