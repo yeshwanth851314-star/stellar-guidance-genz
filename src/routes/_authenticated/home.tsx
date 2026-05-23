@@ -177,10 +177,28 @@ function Home() {
         <div className="grid grid-cols-2 gap-3">
           <div className="glass glass-edge rounded-2xl p-4 text-center">
             <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Color</p>
-            <div
-              className="mx-auto mt-2 h-8 w-8 rounded-full"
-              style={{ background: daily.lucky_color ?? "#fff", boxShadow: `0 0 20px ${daily.lucky_color ?? "#fff"}` }}
-            />
+            <svg
+              viewBox="0 0 64 64"
+              className="mx-auto mt-2 h-9 w-9"
+              style={{
+                color: daily.lucky_color ?? "#fff",
+                filter: `drop-shadow(0 0 10px ${daily.lucky_color ?? "#fff"})`,
+              }}
+              aria-hidden="true"
+            >
+              {Array.from({ length: 8 }).map((_, i) => (
+                <path
+                  key={i}
+                  d="M32 8 C 38 22, 38 34, 32 44 C 26 34, 26 22, 32 8 Z"
+                  fill="currentColor"
+                  fillOpacity="0.55"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                  transform={`rotate(${i * 45} 32 32)`}
+                />
+              ))}
+              <circle cx="32" cy="32" r="4" fill="currentColor" />
+            </svg>
           </div>
           <div className="glass glass-edge rounded-2xl p-4 text-center">
             <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Number</p>
