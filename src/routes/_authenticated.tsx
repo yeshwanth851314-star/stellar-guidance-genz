@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { BottomNav } from "@/components/BottomNav";
+import { OmAmbient } from "@/components/OmAmbient";
 import { useDailyReminder } from "@/hooks/use-daily-reminder";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -53,6 +54,7 @@ function AuthLayout() {
 
   return (
     <div className="min-h-screen pb-24">
+      <OmAmbient />
       <Outlet />
       <BottomNav />
     </div>
