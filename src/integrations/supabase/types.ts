@@ -21,10 +21,12 @@ export type Database = {
           created_at: string
           date: string
           deity: string | null
+          evening_guidance: string | null
           id: string
           lucky_color: string | null
           lucky_number: number | null
           mantra: string | null
+          morning_guidance: string | null
           planetary_insight: string | null
           power_hour_end: string | null
           power_hour_start: string | null
@@ -42,10 +44,12 @@ export type Database = {
           created_at?: string
           date: string
           deity?: string | null
+          evening_guidance?: string | null
           id?: string
           lucky_color?: string | null
           lucky_number?: number | null
           mantra?: string | null
+          morning_guidance?: string | null
           planetary_insight?: string | null
           power_hour_end?: string | null
           power_hour_start?: string | null
@@ -63,10 +67,12 @@ export type Database = {
           created_at?: string
           date?: string
           deity?: string | null
+          evening_guidance?: string | null
           id?: string
           lucky_color?: string | null
           lucky_number?: number | null
           mantra?: string | null
+          morning_guidance?: string | null
           planetary_insight?: string | null
           power_hour_end?: string | null
           power_hour_start?: string | null
