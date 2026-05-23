@@ -32,6 +32,7 @@ function computeLagna(date: Date, latDeg: number, lngDeg: number): { tropical: n
 }
 
 export const geocodePlace = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { place: string }) =>
     z.object({ place: z.string().min(2).max(200) }).parse(input)
   )
