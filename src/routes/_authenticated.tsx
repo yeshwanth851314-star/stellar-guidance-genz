@@ -53,8 +53,6 @@ function AuthLayout() {
 
   return (
     <div className="min-h-screen pb-24">
-      <ScrollProgress />
-      <OmAmbient />
       <Outlet />
       <BottomNav />
     </div>
