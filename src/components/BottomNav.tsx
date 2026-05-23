@@ -1,11 +1,12 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Compass, Sparkles, Leaf, BookOpen, User, Settings } from "lucide-react";
+import { Home, Compass, Sparkles, Leaf, Gift, BookOpen, User, Settings } from "lucide-react";
 
 const tabs = [
   { to: "/home", label: "Home", icon: Home },
   { to: "/chart", label: "Chart", icon: Compass },
   { to: "/ar", label: "Stars", icon: Sparkles },
   { to: "/wellness", label: "Wellness", icon: Leaf },
+  { to: "/tithi", label: "Tithi", icon: Gift },
   { to: "/archive", label: "Archive", icon: BookOpen },
   { to: "/profile", label: "Profile", icon: User },
   { to: "/settings", label: "Settings", icon: Settings },
