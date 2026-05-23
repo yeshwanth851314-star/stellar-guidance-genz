@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWellnessRouteImport } from './routes/_authenticated/wellness'
+import { Route as AuthenticatedTithiRouteImport } from './routes/_authenticated/tithi'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
@@ -43,6 +44,11 @@ const IndexRoute = IndexRouteImport.update({
 const AuthenticatedWellnessRoute = AuthenticatedWellnessRouteImport.update({
   id: '/wellness',
   path: '/wellness',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedTithiRoute = AuthenticatedTithiRouteImport.update({
+  id: '/tithi',
+  path: '/tithi',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/tithi': typeof AuthenticatedTithiRoute
   '/wellness': typeof AuthenticatedWellnessRoute
 }
 export interface FileRoutesByTo {
@@ -98,6 +105,7 @@ export interface FileRoutesByTo {
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/settings': typeof AuthenticatedSettingsRoute
+  '/tithi': typeof AuthenticatedTithiRoute
   '/wellness': typeof AuthenticatedWellnessRoute
 }
 export interface FileRoutesById {
@@ -112,6 +120,7 @@ export interface FileRoutesById {
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
+  '/_authenticated/tithi': typeof AuthenticatedTithiRoute
   '/_authenticated/wellness': typeof AuthenticatedWellnessRoute
 }
 export interface FileRouteTypes {
@@ -126,6 +135,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/settings'
+    | '/tithi'
     | '/wellness'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/home'
     | '/profile'
     | '/settings'
+    | '/tithi'
     | '/wellness'
   id:
     | '__root__'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/_authenticated/home'
     | '/_authenticated/profile'
     | '/_authenticated/settings'
+    | '/_authenticated/tithi'
     | '/_authenticated/wellness'
   fileRoutesById: FileRoutesById
 }
@@ -196,6 +208,13 @@ declare module '@tanstack/react-router' {
       path: '/wellness'
       fullPath: '/wellness'
       preLoaderRoute: typeof AuthenticatedWellnessRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/tithi': {
+      id: '/_authenticated/tithi'
+      path: '/tithi'
+      fullPath: '/tithi'
+      preLoaderRoute: typeof AuthenticatedTithiRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/settings': {
@@ -250,6 +269,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
+  AuthenticatedTithiRoute: typeof AuthenticatedTithiRoute
   AuthenticatedWellnessRoute: typeof AuthenticatedWellnessRoute
 }
 
@@ -260,6 +280,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
+  AuthenticatedTithiRoute: AuthenticatedTithiRoute,
   AuthenticatedWellnessRoute: AuthenticatedWellnessRoute,
 }
 
