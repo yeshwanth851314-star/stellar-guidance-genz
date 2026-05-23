@@ -5,6 +5,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
 import { getDailyContent } from "@/lib/daily-content.functions";
 
+const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
+
 const panchangaQO = queryOptions({
   queryKey: ["panchanga", new Date().toISOString().slice(0, 10)],
   queryFn: () => getPanchanga({ data: {} }),
@@ -63,8 +65,11 @@ function Home() {
           </h1>
         </div>
         <div className="text-right">
-          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Rasi</p>
-          <p className="font-serif text-sm text-primary">{p.rasiName}</p>
+          <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Your Rasi</p>
+          <p className="font-serif text-sm text-primary">
+            {typeof profile?.rasi === "number" ? RASIS[profile.rasi] : p.rasiName}
+          </p>
+          <p className="text-[9px] text-muted-foreground">Moon today: {p.rasiName}</p>
         </div>
       </motion.header>
 
