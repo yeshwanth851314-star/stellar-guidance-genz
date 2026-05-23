@@ -138,6 +138,29 @@ function Home() {
         </p>
       </motion.section>
 
+      {/* Morning / Evening guidance */}
+      <motion.section
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+      >
+        <div className="glass rounded-2xl p-4">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🌅</span>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Morning Guidance</p>
+          </div>
+          <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.morning_guidance ?? ""}</p>
+        </div>
+        <div className="glass rounded-2xl p-4">
+          <div className="flex items-center gap-2">
+            <span className="text-lg">🌙</span>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Evening Guidance</p>
+          </div>
+          <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.evening_guidance ?? ""}</p>
+        </div>
+      </motion.section>
+
       {/* Insight cards */}
       <div className="grid grid-cols-2 gap-3">
         <InsightCard label="Planetary" value={daily.planetary_insight ?? ""} />
