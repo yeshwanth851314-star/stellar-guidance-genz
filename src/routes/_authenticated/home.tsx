@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
 import { getDailyContent } from "@/lib/daily-content.functions";
+import { Reveal } from "@/components/Reveal";
 
 const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
 
@@ -130,63 +131,61 @@ function Home() {
       </motion.section>
 
       {/* Mantra card */}
-      <motion.section
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.25 }}
-        className="glass rounded-2xl p-5 text-center"
-      >
-        <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Mantra</p>
-        <p className="mt-2 font-display text-lg text-gradient-gold">{daily.mantra}</p>
-        <p className="mt-2 text-[10px] uppercase tracking-widest text-muted-foreground">
-          Deity · <span className="text-primary">{daily.deity}</span>
-        </p>
-      </motion.section>
+      <Reveal>
+        <section className="glass rounded-2xl p-5 text-center">
+          <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Mantra</p>
+          <p className="mt-2 font-display text-lg text-gradient-gold">{daily.mantra}</p>
+          <p className="mt-2 text-[10px] uppercase tracking-widest text-muted-foreground">
+            Deity · <span className="text-primary">{daily.deity}</span>
+          </p>
+        </section>
+      </Reveal>
 
       {/* Morning / Evening guidance */}
-      <motion.section
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="grid grid-cols-1 gap-3 sm:grid-cols-2"
-      >
-        <div className="glass rounded-2xl p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🌅</span>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Morning Guidance</p>
+      <Reveal delay={0.05}>
+        <section className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="glass rounded-2xl p-4">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🌅</span>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Morning Guidance</p>
+            </div>
+            <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.morning_guidance ?? ""}</p>
           </div>
-          <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.morning_guidance ?? ""}</p>
-        </div>
-        <div className="glass rounded-2xl p-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🌙</span>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Evening Guidance</p>
+          <div className="glass rounded-2xl p-4">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🌙</span>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Evening Guidance</p>
+            </div>
+            <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.evening_guidance ?? ""}</p>
           </div>
-          <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{daily.evening_guidance ?? ""}</p>
-        </div>
-      </motion.section>
+        </section>
+      </Reveal>
 
       {/* Insight cards */}
-      <div className="grid grid-cols-2 gap-3">
-        <InsightCard label="Planetary" value={daily.planetary_insight ?? ""} />
-        <InsightCard label="Spiritual" value={daily.spiritual_guidance ?? ""} />
-        <InsightCard label="Practical" value={daily.practical_tip ?? ""} />
-        <InsightCard label="Ayurvedic" value={daily.ayurvedic_tip ?? ""} />
-      </div>
+      <Reveal delay={0.1}>
+        <div className="grid grid-cols-2 gap-3">
+          <InsightCard label="Planetary" value={daily.planetary_insight ?? ""} />
+          <InsightCard label="Spiritual" value={daily.spiritual_guidance ?? ""} />
+          <InsightCard label="Practical" value={daily.practical_tip ?? ""} />
+          <InsightCard label="Ayurvedic" value={daily.ayurvedic_tip ?? ""} />
+        </div>
+      </Reveal>
 
-      <div className="grid grid-cols-2 gap-3">
-        <div className="glass rounded-2xl p-4 text-center">
-          <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Color</p>
-          <div
-            className="mx-auto mt-2 h-8 w-8 rounded-full"
-            style={{ background: daily.lucky_color ?? "#fff", boxShadow: `0 0 20px ${daily.lucky_color ?? "#fff"}` }}
-          />
+      <Reveal delay={0.15}>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="glass rounded-2xl p-4 text-center">
+            <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Color</p>
+            <div
+              className="mx-auto mt-2 h-8 w-8 rounded-full"
+              style={{ background: daily.lucky_color ?? "#fff", boxShadow: `0 0 20px ${daily.lucky_color ?? "#fff"}` }}
+            />
+          </div>
+          <div className="glass rounded-2xl p-4 text-center">
+            <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Number</p>
+            <p className="mt-1 font-display text-3xl text-gradient-gold">{daily.lucky_number}</p>
+          </div>
         </div>
-        <div className="glass rounded-2xl p-4 text-center">
-          <p className="text-[9px] uppercase tracking-widest text-muted-foreground">Lucky Number</p>
-          <p className="mt-1 font-display text-3xl text-gradient-gold">{daily.lucky_number}</p>
-        </div>
-      </div>
+      </Reveal>
     </div>
   );
 }
