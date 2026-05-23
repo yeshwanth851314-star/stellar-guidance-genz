@@ -17,6 +17,8 @@ const SCHEMA = z.object({
   lucky_number: z.number().int().min(1).max(99),
   cosmic_energy: z.number().int().min(1).max(100),
   deity: z.string(),
+  morning_guidance: z.string(),
+  evening_guidance: z.string(),
 });
 
 type DailyContent = z.infer<typeof SCHEMA>;
@@ -45,6 +47,8 @@ function fallback(p: ReturnType<typeof computePanchanga>): DailyContent {
     lucky_number: ((p.tithi + p.nakshatra) % 9) + 1,
     cosmic_energy: 50 + ((p.yoga * 7) % 40),
     deity: ["Ganesha", "Shiva", "Lakshmi", "Saraswati", "Hanuman", "Durga", "Vishnu"][p.vara],
+    morning_guidance: `Greet the dawn facing east. Inhale ${p.nakshatraName}'s ${p.dosha} essence for 7 breaths and set one clear intention for today.`,
+    evening_guidance: `As ${p.varaName} closes, light a small flame, release what no longer serves, and offer gratitude to the Moon walking through ${p.nakshatraName}.`,
   };
 }
 
@@ -100,6 +104,8 @@ Return STRICT JSON with these keys:
 - lucky_number: integer 1-99
 - cosmic_energy: integer 1-100 (today's vitality)
 - deity: deity to honor today
+- morning_guidance: 2-3 sentence guided practice for sunrise (breath, mantra, intention) tuned to user's Rasi/Nakshatra/Dosha
+- evening_guidance: 2-3 sentence guided practice for sunset/night (reflection, release, gratitude) tuned to user's Rasi/Nakshatra/Dosha
 
 Return ONLY the JSON object, no markdown.`;
 
