@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
 import { getDailyContent } from "@/lib/daily-content.functions";
 import { Reveal } from "@/components/Reveal";
+import { DivineMandala } from "@/components/DivineMandala";
 
 const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
 
