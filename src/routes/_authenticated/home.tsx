@@ -105,9 +105,10 @@ function Home() {
           background: `linear-gradient(135deg, ${daily.vibe_color}33, oklch(0.18 0.06 275 / 0.6))`,
         }}
       >
-        <div
-          className="absolute -right-6 -top-6 h-32 w-32 rounded-full blur-3xl"
-          style={{ background: `${daily.vibe_color}33` }}
+        <DivineMandala
+          size={200}
+          opacity={0.35}
+          className="pointer-events-none absolute -right-10 -top-10"
         />
         <div className="flex items-center gap-2">
           <span className="text-2xl">{daily.vibe_icon}</span>
