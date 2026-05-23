@@ -3,7 +3,7 @@ import { queryOptions, useSuspenseQuery, useQueryClient } from "@tanstack/react-
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { Heart, Share2, Flame, Loader2 } from "lucide-react";
-import { toPng } from "html-to-image";
+
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
@@ -136,6 +136,7 @@ function Home() {
     if (!vibeRef.current) return;
     setSharing(true);
     try {
+      const { toPng } = await import("html-to-image");
       const dataUrl = await toPng(vibeRef.current, {
         pixelRatio: 2,
         backgroundColor: "#0a0612",
