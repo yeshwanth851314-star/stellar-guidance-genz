@@ -81,6 +81,21 @@ function Settings() {
             className="rounded-lg border border-border bg-background/40 px-3 py-1.5 font-serif text-sm text-primary"
           />
         </div>
+        <button
+          onClick={async () => {
+            if (typeof window !== "undefined" && "Notification" in window) {
+              const p = await Notification.requestPermission();
+              if (p === "granted") {
+                new Notification("✨ Reminders enabled", {
+                  body: "You'll hear from the cosmos at your chosen time.",
+                });
+              }
+            }
+          }}
+          className="mt-3 w-full rounded-lg border border-primary/40 py-2 text-xs text-primary hover:bg-primary/10"
+        >
+          Enable browser notifications
+        </button>
       </section>
 
       <button
