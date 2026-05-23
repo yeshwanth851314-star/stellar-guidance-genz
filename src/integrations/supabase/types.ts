@@ -335,6 +335,30 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_readings: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          snapshot: Json
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          snapshot: Json
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          snapshot?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       yoga_poses: {
         Row: {
           benefit: string | null

@@ -1,16 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { queryOptions, useSuspenseQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import { Heart, Share2, Flame, Loader2 } from "lucide-react";
+import { toPng } from "html-to-image";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
 import { getDailyContent } from "@/lib/daily-content.functions";
 import { Reveal } from "@/components/Reveal";
 
-
 const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
+const TODAY = new Date().toISOString().slice(0, 10);
 
 const panchangaQO = queryOptions({
-  queryKey: ["panchanga", new Date().toISOString().slice(0, 10)],
+  queryKey: ["panchanga", TODAY],
   queryFn: () => getPanchanga({ data: {} }),
   staleTime: 1000 * 60 * 30,
 });
@@ -26,9 +30,51 @@ const profileQO = queryOptions({
 });
 
 const dailyQO = queryOptions({
-  queryKey: ["daily-content", new Date().toISOString().slice(0, 10)],
+  queryKey: ["daily-content", TODAY],
   queryFn: () => getDailyContent({ data: {} }),
   staleTime: 1000 * 60 * 60,
+});
+
+// Streak: count consecutive days (ending today or yesterday) of daily_content rows.
+const streakQO = queryOptions({
+  queryKey: ["streak", TODAY],
+  queryFn: async () => {
+    const { data: u } = await supabase.auth.getUser();
+    if (!u.user) return 0;
+    const { data } = await supabase
+      .from("daily_content")
+      .select("date")
+      .eq("user_id", u.user.id)
+      .order("date", { ascending: false })
+      .limit(60);
+    if (!data || data.length === 0) return 0;
+    const dates = new Set(data.map((d) => d.date));
+    let streak = 0;
+    const cursor = new Date();
+    // allow today OR yesterday as the latest day (so it doesn't break if today's row not yet created)
+    if (!dates.has(cursor.toISOString().slice(0, 10))) cursor.setDate(cursor.getDate() - 1);
+    while (dates.has(cursor.toISOString().slice(0, 10))) {
+      streak++;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+    return streak;
+  },
+  staleTime: 1000 * 60 * 15,
+});
+
+const savedTodayQO = queryOptions({
+  queryKey: ["saved-today", TODAY],
+  queryFn: async () => {
+    const { data: u } = await supabase.auth.getUser();
+    if (!u.user) return false;
+    const { data } = await supabase
+      .from("saved_readings")
+      .select("id")
+      .eq("user_id", u.user.id)
+      .eq("date", TODAY)
+      .maybeSingle();
+    return !!data;
+  },
 });
 
 export const Route = createFileRoute("/_authenticated/home")({
@@ -37,6 +83,8 @@ export const Route = createFileRoute("/_authenticated/home")({
       context.queryClient.ensureQueryData(panchangaQO),
       context.queryClient.ensureQueryData(profileQO),
       context.queryClient.ensureQueryData(dailyQO),
+      context.queryClient.ensureQueryData(streakQO),
+      context.queryClient.ensureQueryData(savedTodayQO),
     ]);
   },
   component: Home,
@@ -46,12 +94,75 @@ function Home() {
   const { data: p } = useSuspenseQuery(panchangaQO);
   const { data: profile } = useSuspenseQuery(profileQO);
   const { data: daily } = useSuspenseQuery(dailyQO);
+  const { data: streak } = useSuspenseQuery(streakQO);
+  const { data: saved } = useSuspenseQuery(savedTodayQO);
+  const qc = useQueryClient();
+  const vibeRef = useRef<HTMLDivElement>(null);
+  const [sharing, setSharing] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const today = new Date().toLocaleDateString(undefined, {
     weekday: "long",
     month: "long",
     day: "numeric",
   });
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const { data: u } = await supabase.auth.getUser();
+      if (!u.user) return;
+      if (saved) {
+        await supabase.from("saved_readings").delete().eq("user_id", u.user.id).eq("date", TODAY);
+        toast.success("Removed from saved");
+      } else {
+        await supabase.from("saved_readings").insert({
+          user_id: u.user.id,
+          date: TODAY,
+          snapshot: daily as never,
+        });
+        toast.success("Saved to your favorites");
+      }
+      qc.invalidateQueries({ queryKey: ["saved-today", TODAY] });
+      qc.invalidateQueries({ queryKey: ["saved-readings"] });
+    } catch {
+      toast.error("Could not save");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!vibeRef.current) return;
+    setSharing(true);
+    try {
+      const dataUrl = await toPng(vibeRef.current, {
+        pixelRatio: 2,
+        backgroundColor: "#0a0612",
+        cacheBust: true,
+      });
+      const blob = await (await fetch(dataUrl)).blob();
+      const file = new File([blob], `divine-vibe-${TODAY}.png`, { type: "image/png" });
+
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: "Today's Divine Vibe",
+          text: `${daily.vibe_theme} — ${daily.vibe_description}`,
+        });
+      } else {
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        a.download = `divine-vibe-${TODAY}.png`;
+        a.click();
+        toast.success("Image downloaded");
+      }
+    } catch {
+      toast.error("Could not generate image");
+    } finally {
+      setSharing(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-5 px-5 pb-6 pt-8">
@@ -65,6 +176,14 @@ function Home() {
           <h1 className="font-display text-2xl text-gradient-gold">
             Namaste, {profile?.name ?? "Seeker"}
           </h1>
+          {streak > 0 && (
+            <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5">
+              <Flame size={10} className="text-primary" />
+              <span className="text-[10px] uppercase tracking-wider text-primary">
+                {streak}-day streak
+              </span>
+            </div>
+          )}
         </div>
         <div className="text-right">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Your Rasi</p>
@@ -98,6 +217,7 @@ function Home() {
 
       {/* Daily Vibe */}
       <motion.section
+        ref={vibeRef}
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
@@ -136,6 +256,32 @@ function Home() {
           />
         </div>
       </motion.section>
+
+      {/* Save / Share actions */}
+      <div className="-mt-2 flex gap-2">
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          aria-label={saved ? "Remove from saved" : "Save today's reading"}
+          className="glass glass-edge flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-[11px] uppercase tracking-widest text-primary transition-opacity disabled:opacity-50"
+        >
+          {saving ? (
+            <Loader2 size={14} className="animate-spin" />
+          ) : (
+            <Heart size={14} className={saved ? "fill-primary text-primary" : ""} />
+          )}
+          {saved ? "Saved" : "Save"}
+        </button>
+        <button
+          onClick={handleShare}
+          disabled={sharing}
+          aria-label="Share today's reading"
+          className="glass glass-edge flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-[11px] uppercase tracking-widest text-primary transition-opacity disabled:opacity-50"
+        >
+          {sharing ? <Loader2 size={14} className="animate-spin" /> : <Share2 size={14} />}
+          Share
+        </button>
+      </div>
 
       {/* Mantra card */}
       <Reveal>
