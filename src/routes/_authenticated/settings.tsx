@@ -29,9 +29,9 @@ function Settings() {
 
   if (!profile) return null;
 
-  const update = async (patch: Record<string, unknown>) => {
+  const update = async (patch: Partial<typeof profile>) => {
     setSaving(true);
-    await supabase.from("profiles").update(patch).eq("user_id", profile.user_id);
+    await supabase.from("profiles").update(patch as never).eq("user_id", profile.user_id);
     await qc.invalidateQueries({ queryKey: ["settings-profile"] });
     setSaving(false);
   };
