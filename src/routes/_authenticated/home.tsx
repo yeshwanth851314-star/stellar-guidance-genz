@@ -119,7 +119,7 @@ function Home() {
         await supabase.from("saved_readings").insert({
           user_id: u.user.id,
           date: TODAY,
-          snapshot: daily as unknown as Record<string, unknown>,
+          snapshot: daily as never,
         });
         toast.success("Saved to your favorites");
       }
