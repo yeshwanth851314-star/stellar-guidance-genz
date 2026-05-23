@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import * as Astronomy from "astronomy-engine";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { computePanchanga } from "./panchanga.functions";
 
 function lahiriAyanamsha(date: Date): number {
@@ -31,6 +32,7 @@ function computeLagna(date: Date, latDeg: number, lngDeg: number): { tropical: n
 }
 
 export const geocodePlace = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { place: string }) =>
     z.object({ place: z.string().min(2).max(200) }).parse(input)
   )
@@ -51,6 +53,7 @@ export const geocodePlace = createServerFn({ method: "POST" })
   });
 
 export const computeFullChart = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: {
     birthDate: string; // YYYY-MM-DD
     birthTime: string; // HH:MM (local)

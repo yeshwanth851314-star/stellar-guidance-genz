@@ -1,8 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { computePanchanga } from "./panchanga.functions";
 
 export const findHinduBirthday = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { birthIso: string; year: number }) =>
     z.object({
       birthIso: z.string().min(8),
