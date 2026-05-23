@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { getPanchanga } from "@/lib/panchanga.functions";
 import { getDailyContent } from "@/lib/daily-content.functions";
 import { Reveal } from "@/components/Reveal";
-import { DivineMandala } from "@/components/DivineMandala";
+
 
 const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
 
@@ -106,11 +106,16 @@ function Home() {
           background: `linear-gradient(135deg, ${daily.vibe_color}33, oklch(0.18 0.06 275 / 0.6))`,
         }}
       >
-        <DivineMandala
-          size={200}
-          opacity={0.35}
-          className="pointer-events-none absolute -right-10 -top-10"
-        />
+        <motion.div
+          aria-hidden="true"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 0.35, scale: 1 }}
+          transition={{ duration: 1.4, ease: "easeOut" }}
+          className="pointer-events-none absolute -right-4 -top-6 select-none font-display text-[7rem] leading-none text-gradient-gold"
+          style={{ filter: "drop-shadow(0 0 24px var(--gold-soft))" }}
+        >
+          ॐ
+        </motion.div>
         <div className="flex items-center gap-2">
           <span className="text-2xl">{daily.vibe_icon}</span>
           <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Vibe</p>
