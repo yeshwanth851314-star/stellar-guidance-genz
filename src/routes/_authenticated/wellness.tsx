@@ -33,11 +33,11 @@ export const Route = createFileRoute("/_authenticated/wellness")({
 function Wellness() {
   const { data } = useSuspenseQuery(wellnessQO);
   const doshaCopy: Record<string, { title: string; sub: string; emoji: string }> = {
-    vata: { title: "Vata", sub: "Air · Ether — ground & warm", emoji: "🌬️" },
-    pitta: { title: "Pitta", sub: "Fire · Water — cool & soften", emoji: "🔥" },
-    kapha: { title: "Kapha", sub: "Earth · Water — energize & lighten", emoji: "🌿" },
+    Vata: { title: "Vata", sub: "Air · Ether — ground & warm", emoji: "🌬️" },
+    Pitta: { title: "Pitta", sub: "Fire · Water — cool & soften", emoji: "🔥" },
+    Kapha: { title: "Kapha", sub: "Earth · Water — energize & lighten", emoji: "🌿" },
   };
-  const d = doshaCopy[data.dosha] ?? doshaCopy.vata;
+  const d = doshaCopy[data.dosha] ?? doshaCopy.Vata;
 
   return (
     <div className="flex flex-col gap-5 px-5 pb-6 pt-8">
