@@ -32,7 +32,12 @@ const fadeUp: Variants = {
   }),
 };
 
-const NAV = ["Wisdom", "Chart", "Rituals", "Contact"];
+const NAV: Array<{ label: string; to: "/login" | "/home" | "/chart" | "/wellness" | "/profile" }> = [
+  { label: "Wisdom", to: "/home" },
+  { label: "Chart", to: "/chart" },
+  { label: "Rituals", to: "/wellness" },
+  { label: "Contact", to: "/profile" },
+];
 const STATS = [
   { n: "108", label: "SACRED\nMANTRAS" },
   { n: "27", label: "LUNAR\nNAKSHATRAS" },
@@ -54,11 +59,21 @@ function Landing() {
   return (
     <div className="font-sans relative flex min-h-screen flex-col overflow-hidden text-foreground">
       {/* Video background */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-cosmos-deep"
+        style={{
+          backgroundImage:
+            "radial-gradient(60% 80% at 70% 20%, oklch(0.32 0.10 280 / 0.7), transparent 60%), radial-gradient(60% 60% at 20% 80%, oklch(0.30 0.12 320 / 0.6), transparent 60%)",
+        }}
+      />
       <video
         autoPlay
         loop
         muted
         playsInline
+        preload="metadata"
+        poster="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/419ec44e-4f09-4213-8537-4c825f1c3ef0/id-preview-c4fd7e51--f52dba0b-7b64-47f3-beb1-ab4a1e0d934b.lovable.app-1779551117379.png"
         className="absolute inset-0 h-full w-full object-cover"
         src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260517_222138_3e3205be-3364-417b-a64a-bfe087acbec4.mp4"
       />
@@ -79,18 +94,21 @@ function Landing() {
         </motion.div>
 
         <div className="hidden items-center gap-8 md:flex">
-          {NAV.map((label, i) => (
-            <motion.a
-              key={label}
-              href="#"
+          {NAV.map((item, i) => (
+            <motion.div
+              key={item.label}
               variants={fadeDown}
               initial="hidden"
               animate="show"
               custom={i + 1}
-              className="text-sm font-semibold uppercase tracking-widest text-foreground/90 hover:text-[var(--gold)]"
             >
-              {label}
-            </motion.a>
+              <Link
+                to={item.to}
+                className="text-sm font-semibold uppercase tracking-widest text-foreground/90 hover:text-[var(--gold)]"
+              >
+                {item.label}
+              </Link>
+            </motion.div>
           ))}
         </div>
 
@@ -225,15 +243,15 @@ function Landing() {
           </div>
 
           <div className="mt-16 flex flex-col gap-8">
-            {NAV.map((label) => (
-              <a
-                key={label}
-                href="#"
+            {NAV.map((item) => (
+              <Link
+                key={item.label}
+                to={item.to}
                 className="font-display text-3xl font-semibold uppercase tracking-widest text-foreground"
                 onClick={() => setOpen(false)}
               >
-                {label}
-              </a>
+                {item.label}
+              </Link>
             ))}
           </div>
 
