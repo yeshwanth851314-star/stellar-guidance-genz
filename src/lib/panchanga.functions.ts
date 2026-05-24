@@ -101,6 +101,7 @@ export function computePanchanga(date: Date): PanchangaResult {
 }
 
 export const getPanchanga = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { isoDate?: string }) =>
     z.object({ isoDate: z.string().datetime().optional() }).parse(input ?? {})
   )
