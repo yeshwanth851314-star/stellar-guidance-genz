@@ -241,7 +241,8 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-5 px-5 pb-6 pt-8">
+    <div className="flex flex-col gap-5 px-5 pb-6 pt-8 pr-16">
+
       <motion.header
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
