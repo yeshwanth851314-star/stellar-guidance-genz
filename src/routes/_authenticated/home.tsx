@@ -349,7 +349,9 @@ function Home() {
 
       {/* Save / Share actions */}
       <div className="-mt-2 flex gap-2">
-        <button
+        <motion.button
+          whileTap={{ scale: 0.96 }}
+          whileHover={{ y: -1 }}
           onClick={handleSave}
           disabled={saving}
           aria-label={saved ? "Remove from saved" : "Save today's reading"}
@@ -361,8 +363,10 @@ function Home() {
             <Heart size={14} className={saved ? "fill-primary text-primary" : ""} />
           )}
           {saved ? "Saved" : "Save"}
-        </button>
-        <button
+        </motion.button>
+        <motion.button
+          whileTap={{ scale: 0.96 }}
+          whileHover={{ y: -1 }}
           onClick={handleShare}
           disabled={sharing}
           aria-label="Share today's reading"
@@ -370,8 +374,9 @@ function Home() {
         >
           {sharing ? <Loader2 size={14} className="animate-spin" /> : <Share2 size={14} />}
           Share
-        </button>
+        </motion.button>
       </div>
+
 
       <div className="-mt-1 text-right">
         <Link to="/saved" className="text-[10px] uppercase tracking-widest text-muted-foreground hover:text-primary">
