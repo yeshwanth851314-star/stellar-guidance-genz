@@ -166,16 +166,28 @@ Return ONLY the JSON object, no markdown.`;
       content = fallback(panchanga);
     }
 
-    // Upsert cache (overwrite if forced regenerate)
-    if (data.force) {
-      await supabase.from("daily_content").delete().eq("user_id", userId).eq("date", dateStr);
-    }
+    // Deterministic lucky color & number — stable per user per day, never drifts on reload
+    const LUCKY_PALETTE = [
+      "#f59e0b", "#34d399", "#a78bfa", "#f472b6", "#22d3ee",
+      "#fb7185", "#facc15", "#60a5fa", "#c084fc",
+    ];
+    let seed = 0;
+    const seedStr = `${userId}-${dateStr}`;
+    for (let i = 0; i < seedStr.length; i++) seed = (seed * 31 + seedStr.charCodeAt(i)) >>> 0;
+    content.lucky_color = LUCKY_PALETTE[seed % LUCKY_PALETTE.length];
+    content.lucky_number = (seed % 99) + 1;
+
+    // Upsert cache (idempotent — same date+user never produces duplicates or drift)
     const { data: saved } = await supabase
       .from("daily_content")
-      .insert({ user_id: userId, date: dateStr, ...content })
+      .upsert(
+        { user_id: userId, date: dateStr, ...content },
+        { onConflict: "user_id,date" }
+      )
       .select()
       .single();
 
     return saved ?? { user_id: userId, date: dateStr, ...content };
   });
+
 
