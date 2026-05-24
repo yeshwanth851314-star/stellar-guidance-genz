@@ -54,58 +54,85 @@ function fallback(p: ReturnType<typeof computePanchanga>): DailyContent {
 
 export const getDailyContent = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((input: { isoDate?: string }) =>
-    z.object({ isoDate: z.string().optional() }).parse(input ?? {})
+  .inputValidator((input: { isoDate?: string; force?: boolean } | undefined) =>
+    z.object({ isoDate: z.string().optional(), force: z.boolean().optional() }).parse(input ?? {})
   )
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
     const date = data.isoDate ? new Date(data.isoDate) : new Date();
     const dateStr = date.toISOString().slice(0, 10);
 
-    // Check cache
-    const { data: cached } = await supabase
-      .from("daily_content")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("date", dateStr)
-      .maybeSingle();
-    if (cached?.mantra) return cached;
+    // Check cache unless forced
+    if (!data.force) {
+      const { data: cached } = await supabase
+        .from("daily_content")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("date", dateStr)
+        .maybeSingle();
+      if (cached?.mantra) return cached;
+    }
 
     const panchanga = computePanchanga(date);
 
-    // Get profile for personalization
+    // Pull full chart context for personalization
     const { data: profile } = await supabase
       .from("profiles")
-      .select("rasi, nakshatra, dosha, name")
+      .select(
+        "name, rasi, nakshatra, pada, lagna, dosha, moon_longitude, sun_longitude, birth_date, birth_place"
+      )
       .eq("user_id", userId)
       .maybeSingle();
+
+    const RASIS = ["Mesha","Vrishabha","Mithuna","Karka","Simha","Kanya","Tula","Vrischika","Dhanu","Makara","Kumbha","Meena"];
+    const NAKS = ["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishta","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+
+    const userRasi = typeof profile?.rasi === "number" ? RASIS[profile.rasi] : "unknown";
+    const userNak = typeof profile?.nakshatra === "number" ? NAKS[profile.nakshatra] : "unknown";
+    const userLagna = typeof profile?.lagna === "number" ? RASIS[profile.lagna] : "unknown";
 
     let content: DailyContent;
     try {
       const apiKey = process.env.LOVABLE_API_KEY;
       if (!apiKey) throw new Error("no key");
 
-      const prompt = `Generate today's Vedic astrology guidance as JSON for a user.
-Date: ${dateStr}
-User Rasi: ${profile?.rasi ?? "unknown"} | Nakshatra: ${profile?.nakshatra ?? "unknown"} | Dosha: ${profile?.dosha ?? panchanga.dosha}
-Today's Panchanga: Tithi ${panchanga.tithiName}, ${panchanga.varaName}, Nakshatra ${panchanga.nakshatraName}, Yoga ${panchanga.yogaName}, Dosha ${panchanga.dosha}.
+      const prompt = `Generate today's Vedic astrology guidance as JSON.
+
+— Seeker —
+Name: ${profile?.name ?? "Seeker"}
+Birth Rasi (Moon sign): ${userRasi}
+Birth Nakshatra: ${userNak}${profile?.pada ? ` (Pada ${profile.pada})` : ""}
+Lagna (Ascendant): ${userLagna}
+Prakriti / Dosha: ${profile?.dosha ?? panchanga.dosha}
+Natal Moon longitude: ${profile?.moon_longitude ?? "—"}°
+Natal Sun longitude: ${profile?.sun_longitude ?? "—"}°
+Birth: ${profile?.birth_date ?? "—"} · ${profile?.birth_place ?? "—"}
+
+— Today (${dateStr}) Panchanga —
+Tithi: ${panchanga.tithiName}
+Vara: ${panchanga.varaName}
+Nakshatra (Moon today): ${panchanga.nakshatraName}
+Yoga: ${panchanga.yogaName}
+Dosha balance: ${panchanga.dosha}
+
+Tune the morning_guidance and evening_guidance specifically to this seeker — reference how today's Moon Nakshatra (${panchanga.nakshatraName}) interacts with their natal Moon in ${userNak} and their ${userLagna} Lagna. Make them feel personal, not generic.
 
 Return STRICT JSON with these keys:
 - vibe_theme: 3-5 word evocative title
-- vibe_description: 1-2 sentence poetic description tying nakshatra+dosha to the day
+- vibe_description: 1-2 sentence poetic description tying today's nakshatra + their dosha to their day
 - vibe_color: hex color matching the vibe
 - vibe_icon: single emoji
 - mantra: Sanskrit mantra with English transliteration
-- planetary_insight: 1-2 sentences about today's ruling planet's influence
+- planetary_insight: 1-2 sentences about today's ruling planet's influence on this seeker's chart
 - spiritual_guidance: a meditation or ritual to do today (2 sentences)
 - practical_tip: actionable advice for the day
 - ayurvedic_tip: dosha-specific wellness tip (food/herb/practice)
 - lucky_color: hex color
 - lucky_number: integer 1-99
-- cosmic_energy: integer 1-100 (today's vitality)
+- cosmic_energy: integer 1-100 (today's vitality for this seeker)
 - deity: deity to honor today
-- morning_guidance: 2-3 sentence guided practice for sunrise (breath, mantra, intention) tuned to user's Rasi/Nakshatra/Dosha
-- evening_guidance: 2-3 sentence guided practice for sunset/night (reflection, release, gratitude) tuned to user's Rasi/Nakshatra/Dosha
+- morning_guidance: 2-3 sentence guided sunrise practice (breath, mantra, intention) explicitly tuned to their Rasi/Nakshatra/Lagna/Dosha
+- evening_guidance: 2-3 sentence guided sunset/night practice (reflection, release, gratitude) explicitly tuned to their Rasi/Nakshatra/Lagna/Dosha
 
 Return ONLY the JSON object, no markdown.`;
 
@@ -116,14 +143,20 @@ Return ONLY the JSON object, no markdown.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "google/gemini-3-flash-preview",
           messages: [
-            { role: "system", content: "You are a Vedic astrologer. Output only valid JSON." },
+            {
+              role: "system",
+              content:
+                "You are a learned Vedic (Jyotish) astrologer writing personalized daily guidance. Output only valid JSON, no prose, no markdown.",
+            },
             { role: "user", content: prompt },
           ],
           response_format: { type: "json_object" },
         }),
       });
+      if (res.status === 429) throw new Error("rate-limited");
+      if (res.status === 402) throw new Error("credits-exhausted");
       if (!res.ok) throw new Error(`AI ${res.status}`);
       const j = await res.json();
       const raw = j.choices?.[0]?.message?.content ?? "{}";
@@ -133,7 +166,10 @@ Return ONLY the JSON object, no markdown.`;
       content = fallback(panchanga);
     }
 
-    // Cache
+    // Upsert cache (overwrite if forced regenerate)
+    if (data.force) {
+      await supabase.from("daily_content").delete().eq("user_id", userId).eq("date", dateStr);
+    }
     const { data: saved } = await supabase
       .from("daily_content")
       .insert({ user_id: userId, date: dateStr, ...content })
@@ -142,3 +178,4 @@ Return ONLY the JSON object, no markdown.`;
 
     return saved ?? { user_id: userId, date: dateStr, ...content };
   });
+

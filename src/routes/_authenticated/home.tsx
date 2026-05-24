@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useQueryClient, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Heart, Share2, Flame, Loader2, Sun, Sunrise, ShieldAlert, Users, X, Sparkles } from "lucide-react";
+import { Heart, Share2, Flame, Loader2, Sun, Sunrise, ShieldAlert, Users, X, Sparkles, RefreshCw } from "lucide-react";
 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -150,7 +150,21 @@ function Home() {
   const vibeRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
   const [showHint, setShowHint] = useState(false);
+
+  const handleRegenerate = async () => {
+    setRegenerating(true);
+    try {
+      const fresh = await getDailyContent({ data: { force: true } });
+      qc.setQueryData(["daily-content", TODAY], fresh);
+      toast.success("New guidance channeled");
+    } catch {
+      toast.error("Could not regenerate — try again in a moment");
+    } finally {
+      setRegenerating(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -326,9 +340,20 @@ function Home() {
         >
           ॐ
         </motion.div>
-        <div className="flex items-center gap-2">
-          <span className="text-2xl">{daily.vibe_icon}</span>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Vibe</p>
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-2xl">{daily.vibe_icon}</span>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Vibe</p>
+          </div>
+          <motion.button
+            whileTap={{ scale: 0.92 }}
+            onClick={handleRegenerate}
+            disabled={regenerating}
+            aria-label="Regenerate today's guidance"
+            className="glass-edge grid h-7 w-7 place-items-center rounded-full bg-primary/15 text-primary disabled:opacity-50"
+          >
+            <RefreshCw size={12} className={regenerating ? "animate-spin" : ""} />
+          </motion.button>
         </div>
         <h2 className="mt-2 font-display text-2xl text-gradient-gold">{daily.vibe_theme}</h2>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{daily.vibe_description}</p>
