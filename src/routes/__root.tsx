@@ -106,7 +106,7 @@ function RootComponent() {
       <AuthSync />
       <ScrollProgress />
       <OmAmbient />
-      <div className="relative mx-auto min-h-screen w-full max-w-[440px] overflow-hidden">
+      <div className="relative mx-auto min-h-screen w-full max-w-[440px] overflow-x-hidden">
         <StarField />
         <Outlet />
       </div>
