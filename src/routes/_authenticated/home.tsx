@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useQueryClient, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
-import { Heart, Share2, Flame, Loader2, Sun, Sunrise, ShieldAlert, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Heart, Share2, Flame, Loader2, Sun, Sunrise, ShieldAlert, Users, X, Sparkles } from "lucide-react";
 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -101,6 +101,17 @@ function Home() {
   const vibeRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!localStorage.getItem("home-hint-dismissed")) setShowHint(true);
+  }, []);
+
+  const dismissHint = () => {
+    localStorage.setItem("home-hint-dismissed", "1");
+    setShowHint(false);
+  };
 
   const today = new Date().toLocaleDateString(undefined, {
     weekday: "long",
@@ -195,6 +206,34 @@ function Home() {
           <p className="text-[9px] text-muted-foreground">Moon today: {p.rasiName}</p>
         </div>
       </motion.header>
+
+      {showHint && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-edge relative flex items-start gap-3 rounded-2xl bg-primary/10 p-3 pr-9"
+        >
+          <Sparkles className="mt-0.5 shrink-0 text-primary" size={14} />
+          <div className="text-[11px] leading-relaxed text-foreground">
+            <span className="font-serif text-primary">New here?</span> Tap{" "}
+            <Heart size={10} className="-mt-0.5 inline fill-primary text-primary" /> to save a
+            reading, share it as an image, or check{" "}
+            <Link to="/compatibility" className="text-primary underline-offset-2 hover:underline">
+              compatibility
+            </Link>{" "}
+            with a partner.
+          </div>
+          <button
+            onClick={dismissHint}
+            aria-label="Dismiss"
+            className="absolute right-2 top-2 text-muted-foreground hover:text-foreground"
+          >
+            <X size={12} />
+          </button>
+        </motion.div>
+      )}
+
+
 
       {/* Panchanga strip */}
       <motion.section
