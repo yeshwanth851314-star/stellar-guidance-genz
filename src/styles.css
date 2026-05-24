@@ -82,7 +82,7 @@
   --lotus: oklch(0.78 0.12 350);
   --mantra: oklch(0.68 0.14 195);
 
-  --background: oklch(0.17 0.05 280);
+  --background: oklch(0.24 0.06 280);
   --foreground: oklch(0.96 0.02 90);
   --card: oklch(0.18 0.06 275 / 0.7);
   --card-foreground: oklch(0.96 0.02 90);
@@ -107,7 +107,7 @@
   * { border-color: var(--color-border); }
   html, body, #root { min-height: 100vh; }
   body {
-    background: radial-gradient(ellipse at top, oklch(0.28 0.11 290) 0%, oklch(0.18 0.06 282) 60%, oklch(0.13 0.04 280) 100%);
+    background: radial-gradient(ellipse at top, oklch(0.38 0.13 290) 0%, oklch(0.26 0.08 282) 60%, oklch(0.2 0.05 280) 100%);
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
