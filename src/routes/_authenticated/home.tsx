@@ -241,12 +241,12 @@ function Home() {
   };
 
   return (
-    <div className="flex flex-col gap-5 px-5 pb-6 pt-8 pr-16">
+    <div className="flex flex-col gap-5 px-5 pb-6 pt-8">
 
       <motion.header
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-start justify-between gap-3"
+        className="flex items-start justify-between gap-3 pr-14"
       >
         <div className="min-w-0 flex-1">
           <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{today}</p>
