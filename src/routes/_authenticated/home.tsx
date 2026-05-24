@@ -150,7 +150,21 @@ function Home() {
   const vibeRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [regenerating, setRegenerating] = useState(false);
   const [showHint, setShowHint] = useState(false);
+
+  const handleRegenerate = async () => {
+    setRegenerating(true);
+    try {
+      const fresh = await getDailyContent({ data: { force: true } });
+      qc.setQueryData(["daily-content", TODAY], fresh);
+      toast.success("New guidance channeled");
+    } catch {
+      toast.error("Could not regenerate — try again in a moment");
+    } finally {
+      setRegenerating(false);
+    }
+  };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
