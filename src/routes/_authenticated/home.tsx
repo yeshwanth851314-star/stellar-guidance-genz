@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useQueryClient, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Heart, Share2, Flame, Loader2, Sun, Sunrise, ShieldAlert, Users, X, Sparkles } from "lucide-react";
+import { Heart, Share2, Flame, Loader2, Sun, Sunrise, ShieldAlert, Users, X, Sparkles, RefreshCw } from "lucide-react";
 
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
