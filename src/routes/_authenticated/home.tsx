@@ -285,6 +285,12 @@ function Home() {
         </button>
       </div>
 
+      <div className="-mt-1 text-right">
+        <Link to="/saved" className="text-[10px] uppercase tracking-widest text-muted-foreground hover:text-primary">
+          View all saved →
+        </Link>
+      </div>
+
       {/* Muhurat widget — auspicious & inauspicious windows today */}
       <MuhuratWidget lat={profile?.birth_lat as number | null} lng={profile?.birth_lng as number | null} />
 
