@@ -88,8 +88,57 @@ export const Route = createFileRoute("/_authenticated/home")({
       context.queryClient.ensureQueryData(savedTodayQO),
     ]);
   },
+  pendingComponent: HomeSkeleton,
+  pendingMs: 0,
   component: Home,
 });
+
+function Shimmer({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`relative overflow-hidden rounded-xl bg-primary/5 ${className}`}
+      aria-hidden="true"
+    >
+      <motion.div
+        initial={{ x: "-100%" }}
+        animate={{ x: "100%" }}
+        transition={{ repeat: Infinity, duration: 1.4, ease: "linear" }}
+        className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent"
+      />
+    </div>
+  );
+}
+
+function HomeSkeleton() {
+  return (
+    <div className="flex flex-col gap-5 px-5 pb-6 pt-8">
+      <div className="flex items-start justify-between">
+        <div className="space-y-2">
+          <Shimmer className="h-3 w-32" />
+          <Shimmer className="h-7 w-44" />
+        </div>
+        <div className="space-y-2">
+          <Shimmer className="h-3 w-16 ml-auto" />
+          <Shimmer className="h-4 w-20 ml-auto" />
+        </div>
+      </div>
+      <Shimmer className="h-20 rounded-2xl" />
+      <Shimmer className="h-56 rounded-3xl" />
+      <div className="flex gap-2">
+        <Shimmer className="h-10 flex-1 rounded-full" />
+        <Shimmer className="h-10 flex-1 rounded-full" />
+      </div>
+      <Shimmer className="h-24 rounded-2xl" />
+      <Shimmer className="h-20 rounded-2xl" />
+      <div className="grid grid-cols-2 gap-3">
+        <Shimmer className="h-24 rounded-2xl" />
+        <Shimmer className="h-24 rounded-2xl" />
+        <Shimmer className="h-24 rounded-2xl" />
+        <Shimmer className="h-24 rounded-2xl" />
+      </div>
+    </div>
+  );
+}
 
 function Home() {
   const { data: p } = useSuspenseQuery(panchangaQO);
