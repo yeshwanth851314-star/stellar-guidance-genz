@@ -285,6 +285,28 @@ function Home() {
         </button>
       </div>
 
+      {/* Muhurat widget — auspicious & inauspicious windows today */}
+      <MuhuratWidget lat={profile?.birth_lat as number | null} lng={profile?.birth_lng as number | null} />
+
+      {/* Compatibility CTA */}
+      <Reveal delay={0.05}>
+        <Link
+          to="/compatibility"
+          className="glass-strong glass-edge flex items-center justify-between rounded-2xl p-4"
+        >
+          <div className="flex items-center gap-3">
+            <div className="glass-edge rounded-full bg-primary/15 p-2 text-primary">
+              <Users size={16} />
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Synastry</p>
+              <p className="mt-0.5 font-serif text-sm text-foreground">Check compatibility</p>
+            </div>
+          </div>
+          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Ashtakoota →</span>
+        </Link>
+      </Reveal>
+
       {/* Mantra card */}
       <Reveal>
         <section className="glass-strong glass-edge rounded-2xl p-5 text-center">
