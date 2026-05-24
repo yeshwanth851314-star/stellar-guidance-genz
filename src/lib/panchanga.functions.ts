@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import * as Astronomy from "astronomy-engine";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 // Lahiri ayanamsha approximation (sidereal correction)
 function lahiriAyanamsha(date: Date): number {
