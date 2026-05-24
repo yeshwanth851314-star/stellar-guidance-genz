@@ -28,16 +28,30 @@ export function OmAmbient() {
 
     const master = ctx.createGain();
     master.gain.value = 0;
-    master.connect(ctx.destination);
 
-    const base = 136.1; // Om
-    const freqs = [base, base * 2, base * 3]; // fundamental + soft harmonics
-    const oscs: OscillatorNode[] = freqs.map((f, i) => {
+    // Gentle lowpass to remove harshness while keeping clarity
+    const filter = ctx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 1800;
+    filter.Q.value = 0.7;
+    master.connect(filter).connect(ctx.destination);
+
+    const base = 136.1; // Om fundamental
+    // Pure-sine harmonic stack (octave + fifth) for a clear, vocal-like drone
+    const partials: Array<{ ratio: number; gain: number }> = [
+      { ratio: 1, gain: 0.45 },     // fundamental
+      { ratio: 2, gain: 0.30 },     // octave up — adds presence/clarity
+      { ratio: 3, gain: 0.10 },     // fifth above octave — subtle shimmer
+      { ratio: 0.5, gain: 0.18 },   // sub-octave — body without mud
+    ];
+    const oscs: OscillatorNode[] = partials.map(({ ratio, gain }) => {
       const o = ctx.createOscillator();
-      o.type = i === 0 ? "sine" : "triangle";
-      o.frequency.value = f;
+      o.type = "sine";
+      o.frequency.value = base * ratio;
+      // Tiny detune for organic chorus
+      o.detune.value = (Math.random() - 0.5) * 6;
       const g = ctx.createGain();
-      g.gain.value = i === 0 ? 0.55 : i === 1 ? 0.18 : 0.08;
+      g.gain.value = gain;
       o.connect(g).connect(master);
       o.start();
       return o;
@@ -47,13 +61,14 @@ export function OmAmbient() {
     const lfo = ctx.createOscillator();
     const lfoGain = ctx.createGain();
     lfo.frequency.value = 0.18;
-    lfoGain.gain.value = 0.08;
+    lfoGain.gain.value = 0.06;
     lfo.connect(lfoGain).connect(master.gain);
     lfo.start();
     oscs.push(lfo);
 
-    // Fade in
-    master.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 2.5);
+    // Fade in to a clearer, more present level
+    master.gain.linearRampToValueAtTime(0.32, ctx.currentTime + 2.5);
+
 
     nodesRef.current = { gain: master, oscs };
   };
