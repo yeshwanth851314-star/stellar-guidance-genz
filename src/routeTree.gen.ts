@@ -18,6 +18,7 @@ import { Route as AuthenticatedTithiRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
+import { Route as AuthenticatedCompatibilityRouteImport } from './routes/_authenticated/compatibility'
 import { Route as AuthenticatedChartRouteImport } from './routes/_authenticated/chart'
 import { Route as AuthenticatedArchiveRouteImport } from './routes/_authenticated/archive'
 import { Route as AuthenticatedArRouteImport } from './routes/_authenticated/ar'
@@ -66,6 +67,12 @@ const AuthenticatedHomeRoute = AuthenticatedHomeRouteImport.update({
   path: '/home',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedCompatibilityRoute =
+  AuthenticatedCompatibilityRouteImport.update({
+    id: '/compatibility',
+    path: '/compatibility',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedChartRoute = AuthenticatedChartRouteImport.update({
   id: '/chart',
   path: '/chart',
@@ -89,6 +96,7 @@ export interface FileRoutesByFullPath {
   '/ar': typeof AuthenticatedArRoute
   '/archive': typeof AuthenticatedArchiveRoute
   '/chart': typeof AuthenticatedChartRoute
+  '/compatibility': typeof AuthenticatedCompatibilityRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -102,6 +110,7 @@ export interface FileRoutesByTo {
   '/ar': typeof AuthenticatedArRoute
   '/archive': typeof AuthenticatedArchiveRoute
   '/chart': typeof AuthenticatedChartRoute
+  '/compatibility': typeof AuthenticatedCompatibilityRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
   '/settings': typeof AuthenticatedSettingsRoute
@@ -117,6 +126,7 @@ export interface FileRoutesById {
   '/_authenticated/ar': typeof AuthenticatedArRoute
   '/_authenticated/archive': typeof AuthenticatedArchiveRoute
   '/_authenticated/chart': typeof AuthenticatedChartRoute
+  '/_authenticated/compatibility': typeof AuthenticatedCompatibilityRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/ar'
     | '/archive'
     | '/chart'
+    | '/compatibility'
     | '/home'
     | '/profile'
     | '/settings'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/ar'
     | '/archive'
     | '/chart'
+    | '/compatibility'
     | '/home'
     | '/profile'
     | '/settings'
@@ -159,6 +171,7 @@ export interface FileRouteTypes {
     | '/_authenticated/ar'
     | '/_authenticated/archive'
     | '/_authenticated/chart'
+    | '/_authenticated/compatibility'
     | '/_authenticated/home'
     | '/_authenticated/profile'
     | '/_authenticated/settings'
@@ -238,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHomeRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/compatibility': {
+      id: '/_authenticated/compatibility'
+      path: '/compatibility'
+      fullPath: '/compatibility'
+      preLoaderRoute: typeof AuthenticatedCompatibilityRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/chart': {
       id: '/_authenticated/chart'
       path: '/chart'
@@ -266,6 +286,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedArRoute: typeof AuthenticatedArRoute
   AuthenticatedArchiveRoute: typeof AuthenticatedArchiveRoute
   AuthenticatedChartRoute: typeof AuthenticatedChartRoute
+  AuthenticatedCompatibilityRoute: typeof AuthenticatedCompatibilityRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
@@ -277,6 +298,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedArRoute: AuthenticatedArRoute,
   AuthenticatedArchiveRoute: AuthenticatedArchiveRoute,
   AuthenticatedChartRoute: AuthenticatedChartRoute,
+  AuthenticatedCompatibilityRoute: AuthenticatedCompatibilityRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
