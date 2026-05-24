@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import * as Astronomy from "astronomy-engine";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 // Lahiri ayanamsha approximation (sidereal correction)
 function lahiriAyanamsha(date: Date): number {
@@ -101,6 +102,7 @@ export function computePanchanga(date: Date): PanchangaResult {
 }
 
 export const getPanchanga = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { isoDate?: string }) =>
     z.object({ isoDate: z.string().datetime().optional() }).parse(input ?? {})
   )

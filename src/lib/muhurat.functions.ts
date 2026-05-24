@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import * as Astronomy from "astronomy-engine";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 // Rahu kalam slot per weekday (0=Sun..6=Sat), 1-indexed slot of 8 day-segments
 const RAHU_SLOT: Record<number, number> = { 0: 8, 1: 2, 2: 7, 3: 5, 4: 6, 5: 4, 6: 3 };
@@ -11,6 +12,7 @@ function fmt(d: Date | null): string {
 }
 
 export const getMuhurats = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { lat: number; lng: number; isoDate?: string }) =>
     z.object({
       lat: z.number().min(-90).max(90),
