@@ -16,6 +16,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedWellnessRouteImport } from './routes/_authenticated/wellness'
 import { Route as AuthenticatedTithiRouteImport } from './routes/_authenticated/tithi'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSavedRouteImport } from './routes/_authenticated/saved'
 import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedHomeRouteImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedCompatibilityRouteImport } from './routes/_authenticated/compatibility'
@@ -55,6 +56,11 @@ const AuthenticatedTithiRoute = AuthenticatedTithiRouteImport.update({
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedSavedRoute = AuthenticatedSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/compatibility': typeof AuthenticatedCompatibilityRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tithi': typeof AuthenticatedTithiRoute
   '/wellness': typeof AuthenticatedWellnessRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/compatibility': typeof AuthenticatedCompatibilityRoute
   '/home': typeof AuthenticatedHomeRoute
   '/profile': typeof AuthenticatedProfileRoute
+  '/saved': typeof AuthenticatedSavedRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tithi': typeof AuthenticatedTithiRoute
   '/wellness': typeof AuthenticatedWellnessRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/_authenticated/compatibility': typeof AuthenticatedCompatibilityRoute
   '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/saved': typeof AuthenticatedSavedRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tithi': typeof AuthenticatedTithiRoute
   '/_authenticated/wellness': typeof AuthenticatedWellnessRoute
@@ -145,6 +154,7 @@ export interface FileRouteTypes {
     | '/compatibility'
     | '/home'
     | '/profile'
+    | '/saved'
     | '/settings'
     | '/tithi'
     | '/wellness'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/compatibility'
     | '/home'
     | '/profile'
+    | '/saved'
     | '/settings'
     | '/tithi'
     | '/wellness'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/_authenticated/compatibility'
     | '/_authenticated/home'
     | '/_authenticated/profile'
+    | '/_authenticated/saved'
     | '/_authenticated/settings'
     | '/_authenticated/tithi'
     | '/_authenticated/wellness'
@@ -237,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/saved': {
+      id: '/_authenticated/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof AuthenticatedSavedRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/profile': {
       id: '/_authenticated/profile'
       path: '/profile'
@@ -289,6 +308,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedCompatibilityRoute: typeof AuthenticatedCompatibilityRoute
   AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedSavedRoute: typeof AuthenticatedSavedRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTithiRoute: typeof AuthenticatedTithiRoute
   AuthenticatedWellnessRoute: typeof AuthenticatedWellnessRoute
@@ -301,6 +321,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedCompatibilityRoute: AuthenticatedCompatibilityRoute,
   AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedSavedRoute: AuthenticatedSavedRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTithiRoute: AuthenticatedTithiRoute,
   AuthenticatedWellnessRoute: AuthenticatedWellnessRoute,
@@ -319,3 +340,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
