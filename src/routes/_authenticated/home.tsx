@@ -386,10 +386,117 @@ function Home() {
 }
 
 function InsightCard({ label, value }: { label: string; value: string }) {
+  const [open, setOpen] = useState(false);
   return (
-    <div className="glass glass-edge rounded-2xl p-4">
+    <button
+      type="button"
+      onClick={() => setOpen((v) => !v)}
+      className="glass glass-edge rounded-2xl p-4 text-left transition-colors hover:bg-primary/5"
+      aria-expanded={open}
+    >
       <p className="text-[9px] uppercase tracking-widest text-primary">{label}</p>
-      <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground line-clamp-5">{value}</p>
+      <p className={`mt-1.5 text-[11px] leading-relaxed text-muted-foreground ${open ? "" : "line-clamp-5"}`}>
+        {value}
+      </p>
+      {value.length > 180 && (
+        <p className="mt-1 text-[9px] uppercase tracking-widest text-primary/70">
+          {open ? "Show less" : "Tap for more"}
+        </p>
+      )}
+    </button>
+  );
+}
+
+function MuhuratWidget({ lat, lng }: { lat: number | null; lng: number | null }) {
+  const hasCoords = typeof lat === "number" && typeof lng === "number";
+  const { data, isLoading } = useQuery({
+    queryKey: ["muhurats", TODAY, lat, lng],
+    queryFn: () => getMuhurats({ data: { lat: lat!, lng: lng! } }),
+    enabled: hasCoords,
+    staleTime: 1000 * 60 * 60,
+  });
+
+  if (!hasCoords) {
+    return (
+      <Reveal>
+        <Link
+          to="/profile"
+          className="glass glass-edge block rounded-2xl p-4 text-center"
+        >
+          <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Muhurat</p>
+          <p className="mt-1 text-[11px] text-muted-foreground">Add your birth place in Profile to see today's auspicious times</p>
+        </Link>
+      </Reveal>
+    );
+  }
+
+  if (isLoading || !data) {
+    return (
+      <div className="glass glass-edge rounded-2xl p-4">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Muhurats</p>
+        <p className="mt-2 text-[11px] text-muted-foreground">Computing celestial alignment…</p>
+      </div>
+    );
+  }
+
+  return (
+    <Reveal>
+      <section className="glass-strong glass-edge rounded-2xl p-4">
+        <p className="text-[10px] uppercase tracking-[0.3em] text-primary">Today's Muhurats</p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          <MuhuratCell
+            icon={<Sunrise size={12} />}
+            label="Brahma"
+            time={data.brahmaMuhurta ? `${data.brahmaMuhurta.start}–${data.brahmaMuhurta.end}` : "—"}
+            tone="aux"
+          />
+          <MuhuratCell
+            icon={<Sun size={12} />}
+            label="Abhijit"
+            time={data.abhijit ? `${data.abhijit.start}–${data.abhijit.end}` : "—"}
+            tone="good"
+          />
+          <MuhuratCell
+            icon={<ShieldAlert size={12} />}
+            label="Rahu"
+            time={data.rahuKalam ? `${data.rahuKalam.start}–${data.rahuKalam.end}` : "—"}
+            tone="warn"
+          />
+        </div>
+        {data.sunrise && data.sunset && (
+          <p className="mt-3 text-center text-[9px] uppercase tracking-widest text-muted-foreground">
+            Sunrise {data.sunrise.time} · Sunset {data.sunset.time}
+          </p>
+        )}
+      </section>
+    </Reveal>
+  );
+}
+
+function MuhuratCell({
+  icon,
+  label,
+  time,
+  tone,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  time: string;
+  tone: "good" | "warn" | "aux";
+}) {
+  const toneCls =
+    tone === "good"
+      ? "text-emerald-300"
+      : tone === "warn"
+      ? "text-rose-300"
+      : "text-primary";
+  return (
+    <div className="glass-edge rounded-xl bg-background/30 p-2 text-center">
+      <div className={`flex items-center justify-center gap-1 ${toneCls}`}>
+        {icon}
+        <span className="text-[9px] uppercase tracking-widest">{label}</span>
+      </div>
+      <p className="mt-1 font-serif text-[10px] text-foreground">{time}</p>
     </div>
   );
 }
