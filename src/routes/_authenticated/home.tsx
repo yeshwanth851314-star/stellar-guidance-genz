@@ -245,11 +245,11 @@ function Home() {
       <motion.header
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-baseline justify-between"
+        className="flex items-start justify-between gap-3"
       >
-        <div>
+        <div className="min-w-0 flex-1">
           <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">{today}</p>
-          <h1 className="font-display text-2xl text-gradient-gold">
+          <h1 className="font-display text-2xl text-gradient-gold break-words">
             Namaste, {profile?.name ?? "Seeker"}
           </h1>
           {streak > 0 && (
@@ -261,7 +261,7 @@ function Home() {
             </div>
           )}
         </div>
-        <div className="text-right">
+        <div className="shrink-0 text-right">
           <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Your Rasi</p>
           <p className="font-serif text-sm text-primary">
             {typeof profile?.rasi === "number" ? RASIS[profile.rasi] : p.rasiName}
@@ -269,6 +269,7 @@ function Home() {
           <p className="text-[9px] text-muted-foreground">Moon today: {p.rasiName}</p>
         </div>
       </motion.header>
+
 
       {showHint && (
         <motion.div
