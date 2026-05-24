@@ -272,9 +272,7 @@ function Home() {
           ) : (
             <Heart size={14} className={saved ? "fill-primary text-primary" : ""} />
           )}
-          {saved ? (
-            <Link to="/saved" className="underline-offset-2 hover:underline">Saved</Link>
-          ) : "Save"}
+          {saved ? "Saved" : "Save"}
         </button>
         <button
           onClick={handleShare}
