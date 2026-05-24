@@ -1,4 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import { Home, Compass, Sparkles, Leaf, Gift, BookOpen, User, Settings } from "lucide-react";
 
 const tabs = [
@@ -23,12 +24,26 @@ export function BottomNav() {
             <Link
               key={to}
               to={to}
-              className={`flex flex-1 flex-col items-center gap-0.5 rounded-xl px-1 py-1.5 transition ${
+              className={`relative flex flex-1 flex-col items-center gap-0.5 rounded-xl px-1 py-1.5 transition ${
                 active ? "text-primary" : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              <Icon className={`h-4 w-4 ${active ? "drop-shadow-[0_0_6px_var(--gold)]" : ""}`} />
-              <span className="text-[9px] font-medium tracking-wide">{label}</span>
+              {active && (
+                <motion.span
+                  layoutId="bottom-nav-active"
+                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  className="absolute inset-0 rounded-xl bg-primary/10"
+                  aria-hidden="true"
+                />
+              )}
+              <motion.div
+                whileTap={{ scale: 0.85 }}
+                animate={active ? { y: -1 } : { y: 0 }}
+                className="relative z-10"
+              >
+                <Icon className={`h-4 w-4 ${active ? "drop-shadow-[0_0_6px_var(--gold)]" : ""}`} />
+              </motion.div>
+              <span className="relative z-10 text-[9px] font-medium tracking-wide">{label}</span>
             </Link>
           );
         })}
