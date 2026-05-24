@@ -101,6 +101,17 @@ function Home() {
   const vibeRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!localStorage.getItem("home-hint-dismissed")) setShowHint(true);
+  }, []);
+
+  const dismissHint = () => {
+    localStorage.setItem("home-hint-dismissed", "1");
+    setShowHint(false);
+  };
 
   const today = new Date().toLocaleDateString(undefined, {
     weekday: "long",
