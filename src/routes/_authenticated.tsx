@@ -1,5 +1,6 @@
-import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { BottomNav } from "@/components/BottomNav";
 import { useDailyReminder } from "@/hooks/use-daily-reminder";
@@ -51,6 +52,8 @@ function AuthLayout() {
 
   useDailyReminder(reminder.time, reminder.enabled);
 
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
   return (
     <div className="relative min-h-screen overflow-x-hidden pb-24">
       {/* Cinematic cosmic backdrop — shared across all tabs */}
@@ -72,7 +75,17 @@ function AuthLayout() {
           }}
         />
       </div>
-      <Outlet />
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <Outlet />
+        </motion.div>
+      </AnimatePresence>
       <BottomNav />
     </div>
   );
