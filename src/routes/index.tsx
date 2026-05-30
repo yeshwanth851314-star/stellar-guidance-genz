@@ -123,13 +123,13 @@ function Landing() {
       </nav>
 
       {/* HERO — single focal point */}
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-8">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-6 py-8 text-center">
         <motion.p
           variants={fadeUp}
           initial="hidden"
           animate="show"
           custom={2}
-          className="mb-6 text-[11px] font-semibold uppercase tracking-[0.35em] text-foreground/70 sm:text-xs"
+          className="text-[10px] font-semibold uppercase tracking-[0.35em] text-foreground/70"
         >
           Vedic Wisdom · Daily Alignment
         </motion.p>
@@ -142,7 +142,7 @@ function Landing() {
                 animate={{ y: 0 }}
                 transition={{ delay: 0.3 + i * 0.14, duration: 0.7, ease: EASE }}
                 className="block font-display font-semibold uppercase text-gradient-gold"
-                style={{ fontSize: "clamp(2.75rem, 14vw, 7rem)", lineHeight: 0.92, letterSpacing: "0.02em" }}
+                style={{ fontSize: "clamp(2.5rem, 11vw, 4.5rem)", lineHeight: 1, letterSpacing: "0.04em" }}
               >
                 {word}
               </motion.span>
@@ -155,7 +155,7 @@ function Landing() {
           initial="hidden"
           animate="show"
           custom={7}
-          className="mt-8 max-w-md text-sm leading-relaxed text-foreground/85 sm:text-base"
+          className="max-w-[18rem] text-[13px] leading-relaxed text-foreground/80 sm:text-sm"
         >
           Sacred guidance from Panchanga, Nakshatra, and ritual — personalized to your cosmic blueprint.
         </motion.p>
@@ -165,14 +165,14 @@ function Landing() {
           initial="hidden"
           animate="show"
           custom={8}
-          className="mt-10"
+          className="pt-2"
         >
           <Link
             to="/login"
-            className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/60 bg-black/30 px-7 py-3 font-display text-base font-semibold uppercase tracking-wider text-[var(--gold)] backdrop-blur-md transition hover:bg-[var(--gold)]/10 sm:text-lg"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/60 bg-black/40 px-6 py-3 font-display text-sm font-semibold uppercase tracking-wider text-[var(--gold)] backdrop-blur-md transition hover:bg-[var(--gold)]/10"
           >
             Begin Journey
-            <ArrowUpRight className="h-5 w-5" />
+            <ArrowUpRight className="h-4 w-4" />
           </Link>
         </motion.div>
       </main>
