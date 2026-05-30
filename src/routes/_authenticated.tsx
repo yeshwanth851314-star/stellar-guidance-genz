@@ -64,7 +64,7 @@ function AuthLayout() {
           muted
           playsInline
           className="absolute inset-0 h-full w-full object-cover opacity-70"
-          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260517_222138_3e3205be-3364-417b-a64a-bfe087acbec4.mp4"
+          src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260511_131941_d136af49-e243-493a-be14-6ff3f24e09e6.mp4"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-cosmos-deep/80 via-cosmos-deep/75 to-cosmos-deep/95" />
         <div
