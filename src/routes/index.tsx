@@ -38,11 +38,6 @@ const NAV: Array<{ label: string; to: "/login" | "/home" | "/chart" | "/wellness
   { label: "Rituals", to: "/wellness" },
   { label: "Contact", to: "/profile" },
 ];
-const STATS = [
-  { n: "108", label: "SACRED\nMANTRAS" },
-  { n: "27", label: "LUNAR\nNAKSHATRAS" },
-  { n: "12", label: "ZODIAC\nRASIS" },
-];
 const HEADING = ["Align", "Awaken", "Ascend"];
 
 function Logo() {
