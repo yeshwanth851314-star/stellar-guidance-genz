@@ -142,7 +142,7 @@ function Landing() {
                 animate={{ y: 0 }}
                 transition={{ delay: 0.3 + i * 0.14, duration: 0.7, ease: EASE }}
                 className="block font-display font-semibold uppercase text-gradient-gold"
-                style={{ fontSize: "clamp(2.5rem, 11vw, 4.5rem)", lineHeight: 1, letterSpacing: "0.04em" }}
+                style={{ fontSize: "clamp(2rem, 9vw, 3.75rem)", lineHeight: 1.05, letterSpacing: "0.04em" }}
               >
                 {word}
               </motion.span>
