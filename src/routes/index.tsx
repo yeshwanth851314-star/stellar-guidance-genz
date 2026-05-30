@@ -127,101 +127,60 @@ function Landing() {
         </motion.button>
       </nav>
 
-      {/* STATS */}
-      <div className="relative z-10 flex flex-1 items-center justify-end px-5 py-8 sm:px-8 md:px-12 md:py-0">
-        <div className="flex items-end gap-5 sm:gap-8 md:gap-10">
-          {STATS.map((s, i) => (
-            <motion.div
-              key={s.label}
-              variants={fadeUp}
-              initial="hidden"
-              animate="show"
-              custom={i + 2}
-              className="flex flex-col items-end text-right"
-            >
-              <div
-                className="font-display font-semibold leading-none text-foreground"
-                style={{ fontSize: "clamp(1.5rem, 5vw, 3.5rem)" }}
+      {/* HERO — single focal point */}
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center px-6 py-12 text-center sm:px-8">
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={2}
+          className="mb-6 text-[11px] font-semibold uppercase tracking-[0.35em] text-foreground/70 sm:text-xs"
+        >
+          Vedic Wisdom · Daily Alignment
+        </motion.p>
+
+        <h1 aria-label={HEADING.join(" ")} className="flex flex-col items-center">
+          {HEADING.map((word, i) => (
+            <span key={word} className="block overflow-hidden">
+              <motion.span
+                initial={{ y: "110%" }}
+                animate={{ y: 0 }}
+                transition={{ delay: 0.3 + i * 0.14, duration: 0.7, ease: EASE }}
+                className="block font-display font-semibold uppercase text-gradient-gold"
+                style={{ fontSize: "clamp(2.75rem, 14vw, 7rem)", lineHeight: 0.92, letterSpacing: "0.02em" }}
               >
-                <span
-                  className="text-[var(--gold)]"
-                  style={{ fontSize: "0.5em", verticalAlign: "0.35em", marginRight: "0.05em" }}
-                >
-                  +
-                </span>
-                {s.n}
-              </div>
-              <div className="mt-2 whitespace-pre-line text-[10px] font-semibold uppercase leading-tight tracking-widest text-foreground/85 sm:text-xs md:text-sm">
-                {s.label}
-              </div>
-            </motion.div>
+                {word}
+              </motion.span>
+            </span>
           ))}
-        </div>
-      </div>
+        </h1>
 
-      {/* BOTTOM */}
-      <div className="relative z-10 flex flex-col gap-6 px-5 pb-8 sm:px-8 md:gap-12 md:px-12 md:pb-12">
-        {/* Row A */}
-        <div className="flex items-center justify-between gap-4">
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={5}
-            className="max-w-[130px] text-[10px] font-semibold uppercase tracking-widest text-foreground/85 sm:max-w-[160px] sm:text-xs md:max-w-xs md:text-sm"
+        <motion.p
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={7}
+          className="mt-8 max-w-md text-sm leading-relaxed text-foreground/85 sm:text-base"
+        >
+          Sacred guidance from Panchanga, Nakshatra, and ritual — personalized to your cosmic blueprint.
+        </motion.p>
+
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={8}
+          className="mt-10"
+        >
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-2 rounded-full border border-[var(--gold)]/60 bg-black/30 px-7 py-3 font-display text-base font-semibold uppercase tracking-wider text-[var(--gold)] backdrop-blur-md transition hover:bg-[var(--gold)]/10 sm:text-lg"
           >
-            Aligning Soul
-            <br />
-            With Stars
-            <br />
-            For Your Path
-          </motion.p>
-
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={6}
-          >
-            <Link
-              to="/login"
-              className="inline-flex items-center gap-2 whitespace-nowrap font-display text-base font-semibold uppercase tracking-wide text-[var(--gold)] hover:opacity-80 sm:text-xl md:text-2xl"
-            >
-              Begin Journey
-              <ArrowUpRight className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" />
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Row B */}
-        <div className="flex items-end justify-between gap-3 sm:gap-4">
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            animate="show"
-            custom={7}
-            className="w-[120px] shrink-0 text-left text-[9px] font-semibold uppercase tracking-widest text-foreground/85 sm:w-[180px] sm:text-xs md:w-[280px] md:text-right md:text-sm"
-          >
-            Sacred guidance woven from Panchanga, Nakshatra & wellness — personalized to your cosmic blueprint
-          </motion.p>
-
-          <h1 className="text-right" aria-label={HEADING.join(" ")}>
-            {HEADING.map((word, i) => (
-              <span key={word} className="block overflow-hidden">
-                <motion.span
-                  initial={{ y: "110%" }}
-                  animate={{ y: 0 }}
-                  transition={{ delay: 0.4 + i * 0.14, duration: 0.7, ease: EASE }}
-                  className="block font-display font-semibold uppercase text-gradient-gold"
-                  style={{ fontSize: "clamp(2rem, 9vw, 9rem)", lineHeight: 0.88 }}
-                >
-                  {word}
-                </motion.span>
-              </span>
-            ))}
-          </h1>
-        </div>
-      </div>
+            Begin Journey
+            <ArrowUpRight className="h-5 w-5" />
+          </Link>
+        </motion.div>
+      </main>
 
       {/* MOBILE MENU */}
       {open && (
